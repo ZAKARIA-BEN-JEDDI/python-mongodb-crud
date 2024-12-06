@@ -1,0 +1,15 @@
+fblast mandiro idkhel id ikon autoincrement (non realiser)
+o fach ibghi idkhel information dial product mandiroch idkhel id 7it baykon autoincrement (non realiser)
+o il bgha idkhel information dial product o nom dialo deja existe f chi enregistrement ndiro lih msg erreur (non realiser)
+
+
+-connection avec la base de donne (realiser)
+
+3 table : client - product - commande (realiser)
+
+client(id - nom - email - mot de passe - address_laivraison) (realiser)
+*** product (id - nom - prix - qte - description) (realiser)
+commande(id_commande - id_client - id_produt - qte - date_command - option:(date-laivrer)) (realiser)
+
+button dans client permet de commander un product , apres les information se stock dans client et product et commande
+    automatiquement (realiser)
