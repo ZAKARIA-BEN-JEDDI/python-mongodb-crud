@@ -1,5 +1,5 @@
 import sqlite3
-
+# this will be mongodb import
 def creer_db_produit():
     connexion = sqlite3.connect('magasin.db')
     cursor = connexion.cursor() #?curseur est utilisé pour exécuter des requêtes SQL et récupérer les résultats.
