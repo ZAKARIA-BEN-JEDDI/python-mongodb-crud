@@ -44,3 +44,5 @@ def chercher_client(id):
 def ajouter(id,nom,prenom,telephone,adress):
   client_collection.insert_one({'_id':id,'nom':nom,'prenom':prenom,'telephone':telephone,'adress':adress})
 
+def suprimmer_client(id):
+  client_collection.delete_one({'_id':id})

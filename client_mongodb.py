@@ -123,37 +123,29 @@ class CLientClassMongo:
 
     def modifier(self):
         client_selectionne = self.p2_table2.focus()  # Récupérer le client sélectionné dans la table
-        if client_selectionne:  # Vérifier si un client est sélectionné
-            id = self.id_client_entrer.get()  # Récupérer l'id du client
-            nv_nom = self.nom_client_entrer.get()  # Récupérer le nouveau nom
-            nv_prenom = self.prenom_client_entrer.get()  # Récupérer le nouveau prénom
-            nv_telephone = self.tel_client_entrer.get()  # Récupérer le nouveau téléphone
-            nv_adress = self.adrs_client_entrer.get()  # Récupérer la nouvelle adresse
-            
-            # Appeler la fonction modifier pour mettre à jour les données dans la base de données MongoDB
+        if client_selectionne:
+            id = self.id_client_entrer.get()
+            nv_nom = self.nom_client_entrer.get()
+            nv_prenom = self.prenom_client_entrer.get()
+            nv_telephone = self.tel_client_entrer.get()
+            nv_adress = self.adrs_client_entrer.get()
             db_client_mongodb.modifier(nv_nom=nv_nom, nv_prenom=nv_prenom, nv_telephone=nv_telephone, nv_adress=nv_adress, id=int(id))
-            
-            # Rafraîchir le tableau pour afficher les nouvelles données
             self.remplir_tableau()
-            
-            # Afficher un message de succès
             tkinter.messagebox.showinfo('', "CLIENT MODIFIÉ AVEC SUCCÈS")
-            
-            # Effacer les champs de saisie
             self.clear_All_input()
         else:
             tkinter.messagebox.showerror('', "SÉLECTIONNER LE CLIENT D'ABORD")
 
     def suprimmer(self):
         client_selectionne = self.p2_table2.focus()
-        # if client_selectionne:
-        #     id = self.id_client_entrer.get()
-        #     db_client.suprimmer_client(id=id)
-        #     self.remplir_tableau()
-        #     tkinter.messagebox.showinfo('',"CLIENT SUPRIMMER AVEC SUCCES")
-        #     self.clear_All_input()
-        # else:
-        #     tkinter.messagebox.showerror('',"SELECTIONNER LE CLIENT D'BBORD")
+        if client_selectionne:
+            id = self.id_client_entrer.get()
+            db_client_mongodb.suprimmer_client(id=id)
+            self.remplir_tableau()
+            tkinter.messagebox.showinfo('',"CLIENT SUPRIMMER AVEC SUCCES")
+            self.clear_All_input()
+        else:
+            tkinter.messagebox.showerror('',"SELECTIONNER LE CLIENT D'BBORD")
 
     def chercher_par_email(self):
         self.remplir_tableau()
