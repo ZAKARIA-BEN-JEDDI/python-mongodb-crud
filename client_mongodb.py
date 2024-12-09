@@ -80,18 +80,18 @@ class CLientClassMongo:
         self.show_input()
         id = self.id_client_entrer.get()
         nom = self.nom_client_entrer.get()
-        email = self.prenom_client_entrer.get()
-        mdp = self.tel_client_entrer.get()
+        prenom = self.prenom_client_entrer.get()
+        telephone = self.tel_client_entrer.get()
         adress = self.adrs_client_entrer.get()
-        # if id == '' or nom == '' or email == '' or mdp == '' or adress == '':
-        #     tkinter.messagebox.showerror('',"CHAMP VIDE")
-        # elif db_client.chercher_client(id):
-        #     tkinter.messagebox.showerror('',"CLIENT DEJA EXIST")
-        # else:
-        #     db_client.ajouter(id=id,nom=nom,email=email,mdp=mdp,adress=adress)
-        #     self.remplir_tableau()
-        #     tkinter.messagebox.showinfo('',"CLIENT AJOUTE AVEC SUCCES")
-        #     self.clear_All_input()
+        if id == '' or nom == '' or prenom == '' or telephone == '' or adress == '':
+            tkinter.messagebox.showerror('',"CHAMP VIDE")
+        elif db_client_mongodb.chercher_client(id):
+            tkinter.messagebox.showerror('',"CLIENT DEJA EXIST")
+        else:
+            db_client_mongodb.ajouter(id=id,nom=nom,prenom=prenom,telephone=telephone,adress=adress)
+            self.remplir_tableau()
+            tkinter.messagebox.showinfo('',"CLIENT AJOUTE AVEC SUCCES")
+            self.clear_All_input()
 
 
     def remplir_tableau(self):

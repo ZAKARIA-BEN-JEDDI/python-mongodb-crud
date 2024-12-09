@@ -36,4 +36,11 @@ def modifier(nv_nom,nv_prenom,nv_telephone,nv_adress,id):
     }}
 )
 
-modifier('khalid','hamid','091231231','tawjtat',1)
+def chercher_client(id):
+  client = client_collection.find_one({'_id': id})
+  return client is not None
+
+
+def ajouter(id,nom,prenom,telephone,adress):
+  client_collection.insert_one({'_id':id,'nom':nom,'prenom':prenom,'telephone':telephone,'adress':adress})
+
