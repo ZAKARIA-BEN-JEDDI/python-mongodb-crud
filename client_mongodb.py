@@ -3,9 +3,9 @@ from tkinter import ttk
 import tkinter as tk
 import tkinter.messagebox
 from tkinter import font
-from page1 import *
-import db_client
-class Class_page2:
+# from page1 import *
+import db_client_mongodb
+class CLientClassMongo:
     def afficher_interface2(self):
         #TODO insitialisation de la page
         self.page2 = Tk()
@@ -86,24 +86,33 @@ class Class_page2:
         email = self.emial_client_entrer.get()
         mdp = self.mdp_client_entrer.get()
         adress = self.adrs_client_entrer.get()
-        if id == '' or nom == '' or email == '' or mdp == '' or adress == '':
-            tkinter.messagebox.showerror('',"CHAMP VIDE")
-        elif db_client.chercher_client(id):
-            tkinter.messagebox.showerror('',"CLIENT DEJA EXIST")
-        else:
-            db_client.ajouter(id=id,nom=nom,email=email,mdp=mdp,adress=adress)
-            self.remplir_tableau()
-            tkinter.messagebox.showinfo('',"CLIENT AJOUTE AVEC SUCCES")
-            self.clear_All_input()
+        # if id == '' or nom == '' or email == '' or mdp == '' or adress == '':
+        #     tkinter.messagebox.showerror('',"CHAMP VIDE")
+        # elif db_client.chercher_client(id):
+        #     tkinter.messagebox.showerror('',"CLIENT DEJA EXIST")
+        # else:
+        #     db_client.ajouter(id=id,nom=nom,email=email,mdp=mdp,adress=adress)
+        #     self.remplir_tableau()
+        #     tkinter.messagebox.showinfo('',"CLIENT AJOUTE AVEC SUCCES")
+        #     self.clear_All_input()
+
 
     def remplir_tableau(self):
-        all_client = db_client.get_all_client()
+        #? Récupération de tous les clients depuis MongoDB
+        all_client = db_client_mongodb.get_all_client_mongo()
+        #? Réinitialisation des lignes existantes
         self.p2_table2.delete(*self.p2_table2.get_children())
+        #? Ajout des données dans le tableau
         for client in all_client:
-            self.p2_table2.insert('',END,values=client)
+            self.p2_table2.insert('', 'end', values=(
+                client['_id'], 
+                client['prenom'], 
+                client['tel'], 
+                client['adress_laivraison']
+            ))
 
     def selected_row(self,event):
-        # self.show_input()
+        self.show_input()
         self.clear_All_input()
         client_selectionne = self.p2_table2.focus()
         if client_selectionne:
@@ -116,48 +125,47 @@ class Class_page2:
 
     def modifier(self):
         client_selectionne = self.p2_table2.focus()
-        if client_selectionne:
-            id = self.id_client_entrer.get()
-            nvnom = self.nom_client_entrer.get()
-            nv_email = self.emial_client_entrer.get()
-            nv_mdp = self.mdp_client_entrer.get()
-            nv_adress = self.adrs_client_entrer.get()
-            db_client.modifier(nv_nom=nvnom,nv_email=nv_email,nv_mdp=nv_mdp,nv_adress=nv_adress,id=id)
-            self.remplir_tableau()
-            tkinter.messagebox.showinfo('',"CLIENT MODIFIER AVEC SUCCES")
-            self.clear_All_input()
-        else:
-            tkinter.messagebox.showerror('',"SELECTIONNER LE CLIENT D'BBORD")
-
+        # if client_selectionne:
+        #     id = self.id_client_entrer.get()
+        #     nvnom = self.nom_client_entrer.get()
+        #     nv_email = self.emial_client_entrer.get()
+        #     nv_mdp = self.mdp_client_entrer.get()
+        #     nv_adress = self.adrs_client_entrer.get()
+        #     db_client.modifier(nv_nom=nvnom,nv_email=nv_email,nv_mdp=nv_mdp,nv_adress=nv_adress,id=id)
+        #     self.remplir_tableau()
+        #     tkinter.messagebox.showinfo('',"CLIENT MODIFIER AVEC SUCCES")
+        #     self.clear_All_input()
+        # else:
+        #     tkinter.messagebox.showerror('',"SELECTIONNER LE CLIENT D'BBORD")
 
     def suprimmer(self):
         client_selectionne = self.p2_table2.focus()
-        if client_selectionne:
-            id = self.id_client_entrer.get()
-            db_client.suprimmer_client(id=id)
-            self.remplir_tableau()
-            tkinter.messagebox.showinfo('',"CLIENT SUPRIMMER AVEC SUCCES")
-            self.clear_All_input()
-        else:
-            tkinter.messagebox.showerror('',"SELECTIONNER LE CLIENT D'BBORD")
+        # if client_selectionne:
+        #     id = self.id_client_entrer.get()
+        #     db_client.suprimmer_client(id=id)
+        #     self.remplir_tableau()
+        #     tkinter.messagebox.showinfo('',"CLIENT SUPRIMMER AVEC SUCCES")
+        #     self.clear_All_input()
+        # else:
+        #     tkinter.messagebox.showerror('',"SELECTIONNER LE CLIENT D'BBORD")
 
     def chercher_par_email(self):
         self.remplir_tableau()
-        email = self.chercher_email_client_entrer.get()
-        results = db_client.chercher_client_email(email=email)
-        self.p2_table2.delete(*self.p2_table2.get_children())
-        for result in results:
-            self.p2_table2.insert('',END,values=result)
-        self.chercher_email_client_entrer.delete(0,END)
+        # email = self.chercher_email_client_entrer.get()
+        # results = db_client.chercher_client_email(email=email)
+        # self.p2_table2.delete(*self.p2_table2.get_children())
+        # for result in results:
+        #     self.p2_table2.insert('',END,values=result)
+        # self.chercher_email_client_entrer.delete(0,END)
 
     def chercher_par_nom(self):
         self.remplir_tableau()
-        nom = self.chercher_nom_client_entrer.get()
-        clients = db_client.chercher_client_nom(nom)
-        self.p2_table2.delete(*self.p2_table2.get_children())
-        for client in clients:
-            self.p2_table2.insert('',END,values=client)
-        self.chercher_nom_client_entrer.delete(0,END)
+        # nom = self.chercher_nom_client_entrer.get()
+        # clients = db_client.chercher_client_nom(nom)
+        # self.p2_table2.delete(*self.p2_table2.get_children())
+        # for client in clients:
+        #     self.p2_table2.insert('',END,values=client)
+        # self.chercher_nom_client_entrer.delete(0,END)
 
     def clear_All_input(self):
         self.id_client_entrer.delete(0, END)  # Deletes all characters
@@ -202,22 +210,31 @@ class Class_page2:
         self.p2_b3.bind("<Leave>", self.on_leave3)
 
     def changer_page_to_table1(self):
-        self.page2.destroy()
-        p1 = page1()
-        p1.afficher_interface()
+        return True
+    #     self.page2.destroy()
+    #     p1 = page1()
+    #     p1.afficher_interface()
 
     def table2(self):
-        self.p2_table2 = ttk.Treeview(self.page2,height=15)
-        self.p2_table2['columns'] = ('ID','NOM','EMAIL','MOT DE PASS','ADRESS DE LAIVRAISON')
-        self.p2_table2.column('#0',stretch=tk.NO,width=0)
-        self.p2_table2.column('ID',anchor=tk.CENTER,width=250)
-        self.p2_table2.column('NOM',anchor=tk.CENTER,width=250)
-        self.p2_table2.column('EMAIL',anchor=tk.CENTER,width=250)
-        self.p2_table2.column('MOT DE PASS',anchor=tk.CENTER,width=250)
-        self.p2_table2.column('ADRESS DE LAIVRAISON',anchor=tk.CENTER,width=250)
-        self.p2_table2.heading('ID',text='ID')
-        self.p2_table2.heading('NOM',text='NOM')
-        self.p2_table2.heading('EMAIL',text='EMAIL')
-        self.p2_table2.heading('MOT DE PASS',text='MOT DE PASS')
-        self.p2_table2.heading('ADRESS DE LAIVRAISON',text='ADRESS DE LAIVRAISON')
+        # Création de la table Treeview
+        self.p2_table2 = ttk.Treeview(self.page2, height=15)
+        self.p2_table2['columns'] = ('ID', 'PRENOM', 'TEL', 'ADRESS')
+
+        # Configuration des colonnes
+        self.p2_table2.column('#0', stretch=tk.NO, width=0)
+        self.p2_table2.column('ID', anchor=tk.CENTER, width=100)
+        self.p2_table2.column('PRENOM', anchor=tk.CENTER, width=150)
+        self.p2_table2.column('TEL', anchor=tk.CENTER, width=150)
+        self.p2_table2.column('ADRESS', anchor=tk.CENTER, width=250)
+
+        # Définition des entêtes
+        self.p2_table2.heading('ID', text='ID')
+        self.p2_table2.heading('PRENOM', text='PRENOM')
+        self.p2_table2.heading('TEL', text='TEL')
+        self.p2_table2.heading('ADRESS', text='ADRESS')
+
+        # Positionnement de la table
         self.p2_table2.place(x=0, y=240)
+
+p1 = CLientClassMongo()
+p1.afficher_interface2()
