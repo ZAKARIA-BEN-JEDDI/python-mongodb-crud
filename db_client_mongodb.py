@@ -6,7 +6,10 @@ myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 
 PythonMongodb = myclient["PythonMongodb"]
 
-client_collection = PythonMongodb['client']
+client_collection = PythonMongodb['clients']
+
+for client in client_collection.find():
+  print(client)
 
 # TODO initialisation des key de document
 # id = int(input("enterer un id : "))

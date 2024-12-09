@@ -29,9 +29,9 @@ class CLientClassMongo:
         self.id_client_entrer = Entry(self.page2,border=1,width=20)
         self.nom_client_label = Label(self.page2,text="NOM",background="#006666",fg="#fff",font=self.p2_font_champ)
         self.nom_client_entrer = Entry(self.page2,border=1,width=20)
-        self.emial_client_label = Label(self.page2,text="EMAIL",background="#006666",fg="#fff",font=self.p2_font_champ)
+        self.emial_client_label = Label(self.page2,text="PRENOM",background="#006666",fg="#fff",font=self.p2_font_champ)
         self.emial_client_entrer = Entry(self.page2,border=1,width=20)
-        self.mdp_client_label = Label(self.page2,text="MOT DE PASSE",background="#006666",fg="#fff",font=self.p2_font_champ)
+        self.tel_client_label = Label(self.page2,text="TELEPHONE",background="#006666",fg="#fff",font=self.p2_font_champ)
         self.mdp_client_entrer = Entry(self.page2,border=1,width=20)
         self.adrs_client_label = Label(self.page2,text="ADRESS DE LAIVRAISON",background="#006666",fg="#fff",font=self.p2_font_champ)
         self.adrs_client_entrer = Entry(self.page2,border=1,width=35)
@@ -73,7 +73,7 @@ class CLientClassMongo:
         self.emial_client_entrer.place(x=600,y=65)
         self.nom_client_label.place(x=800,y=25)
         self.nom_client_entrer.place(x=850,y=30)
-        self.mdp_client_label.place(x=760,y=60)
+        self.tel_client_label.place(x=760,y=60)
         self.mdp_client_entrer.place(x=850,y=65)
         self.adrs_client_label.place(x=490,y=100)
         self.adrs_client_entrer.place(x=670,y=105)
@@ -106,9 +106,10 @@ class CLientClassMongo:
         for client in all_client:
             self.p2_table2.insert('', 'end', values=(
                 client['_id'], 
+                client['nom'], 
                 client['prenom'], 
-                client['tel'], 
-                client['adress_laivraison']
+                client['telephone'], 
+                client['adress']
             ))
 
     def selected_row(self,event):
@@ -218,23 +219,26 @@ class CLientClassMongo:
     def table2(self):
         # Création de la table Treeview
         self.p2_table2 = ttk.Treeview(self.page2, height=15)
-        self.p2_table2['columns'] = ('ID', 'PRENOM', 'TEL', 'ADRESS')
+        self.p2_table2['columns'] = ('ID', 'NOM','PRENOM', 'TEL', 'ADRESS')
 
         # Configuration des colonnes
         self.p2_table2.column('#0', stretch=tk.NO, width=0)
         self.p2_table2.column('ID', anchor=tk.CENTER, width=100)
-        self.p2_table2.column('PRENOM', anchor=tk.CENTER, width=150)
-        self.p2_table2.column('TEL', anchor=tk.CENTER, width=150)
-        self.p2_table2.column('ADRESS', anchor=tk.CENTER, width=250)
+        self.p2_table2.column('NOM', anchor=tk.CENTER, width=250)
+        self.p2_table2.column('PRENOM', anchor=tk.CENTER, width=250)
+        self.p2_table2.column('TEL', anchor=tk.CENTER, width=250)
+        self.p2_table2.column('ADRESS', anchor=tk.CENTER, width=300)
 
         # Définition des entêtes
         self.p2_table2.heading('ID', text='ID')
+        self.p2_table2.heading('NOM', text='NOM')
         self.p2_table2.heading('PRENOM', text='PRENOM')
         self.p2_table2.heading('TEL', text='TEL')
         self.p2_table2.heading('ADRESS', text='ADRESS')
 
         # Positionnement de la table
-        self.p2_table2.place(x=0, y=240)
+        self.p2_table2.place(x=25, y=240)
+        # self.p2_table2.place(x=10, y=240, relwidth=0.95, relheight=0.7)
 
 p1 = CLientClassMongo()
 p1.afficher_interface2()
