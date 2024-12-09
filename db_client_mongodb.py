@@ -46,3 +46,17 @@ def ajouter(id,nom,prenom,telephone,adress):
 
 def suprimmer_client(id):
   client_collection.delete_one({'_id':id})
+
+def chercher_client_telephone(telephone):
+    result = client_collection.find_one({"telephone": telephone})
+    if result: 
+        return [result]
+    else:
+        return []
+
+def chercher_client_nom(nom):
+  result = client_collection.find_one({'nom':nom})
+  if result :
+    return [result]
+  else:
+    return []

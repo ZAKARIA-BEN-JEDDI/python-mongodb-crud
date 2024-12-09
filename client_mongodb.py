@@ -48,9 +48,9 @@ class CLientClassMongo:
         self.adrs_client_label = Label(self.page2,text="ADRESS DE LAIVRAISON",background="#006666",fg="#fff",font=self.p2_font_champ)
         self.adrs_client_entrer = Entry(self.page2,border=1,width=35)
 
-        self.chercher_email_client_entrer = Entry(self.page2,border=1,width=25)
-        self.chercher_email_client_entrer.place(x=180 ,y=25)
-        self.p2_b4 = Button(self.page2,text="chercher par email",padx= 10,pady=1,command=self.chercher_par_email, fg="#000", font=self.p2_font_button_chercher,highlightbackground="red",cursor='hand2')
+        self.chercher_telephone_client_entrer = Entry(self.page2,border=1,width=25)
+        self.chercher_telephone_client_entrer.place(x=180 ,y=25)
+        self.p2_b4 = Button(self.page2,text="chercher par telephone",padx= 10,pady=1,command=self.chercher_par_telephone, fg="#000", font=self.p2_font_button_chercher,highlightbackground="red",cursor='hand2')
         self.p2_b4.place(x=180, y=50)
         self.chercher_nom_client_entrer = Entry(self.page2,border=1,width=25)
         self.chercher_nom_client_entrer.place(x=180 ,y=120)
@@ -95,6 +95,7 @@ class CLientClassMongo:
 
 
     def remplir_tableau(self):
+        self.clear_All_input()
         #? Récupération de tous les clients depuis MongoDB
         all_client = db_client_mongodb.get_all_client_mongo()
         #? Réinitialisation des lignes existantes
@@ -147,23 +148,23 @@ class CLientClassMongo:
         else:
             tkinter.messagebox.showerror('',"SELECTIONNER LE CLIENT D'BBORD")
 
-    def chercher_par_email(self):
+    def chercher_par_telephone(self):
         self.remplir_tableau()
-        # email = self.chercher_email_client_entrer.get()
-        # results = db_client.chercher_client_email(email=email)
-        # self.p2_table2.delete(*self.p2_table2.get_children())
-        # for result in results:
-        #     self.p2_table2.insert('',END,values=result)
-        # self.chercher_email_client_entrer.delete(0,END)
+        telephone = self.chercher_telephone_client_entrer.get()
+        results = db_client_mongodb.chercher_client_telephone(telephone=telephone)
+        self.p2_table2.delete(*self.p2_table2.get_children())
+        for result in results:
+            self.p2_table2.insert('', END, values=(result['_id'], result['nom'], result['prenom'], result['telephone'], result['adress']))
+        self.chercher_telephone_client_entrer.delete(0, END)
 
     def chercher_par_nom(self):
         self.remplir_tableau()
-        # nom = self.chercher_nom_client_entrer.get()
-        # clients = db_client.chercher_client_nom(nom)
-        # self.p2_table2.delete(*self.p2_table2.get_children())
-        # for client in clients:
-        #     self.p2_table2.insert('',END,values=client)
-        # self.chercher_nom_client_entrer.delete(0,END)
+        nom = self.chercher_nom_client_entrer.get()
+        results = db_client_mongodb.chercher_client_nom(nom)
+        self.p2_table2.delete(*self.p2_table2.get_children())
+        for result in results:
+            self.p2_table2.insert('', END, values=(result['_id'], result['nom'], result['prenom'], result['telephone'], result['adress']))
+        self.chercher_nom_client_entrer.delete(0,END)
 
     def clear_All_input(self):
         self.id_client_entrer.delete(0, END)  # Deletes all characters
