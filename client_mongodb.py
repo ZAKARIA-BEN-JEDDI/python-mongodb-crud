@@ -29,10 +29,10 @@ class CLientClassMongo:
         self.id_client_entrer = Entry(self.page2,border=1,width=20)
         self.nom_client_label = Label(self.page2,text="NOM",background="#006666",fg="#fff",font=self.p2_font_champ)
         self.nom_client_entrer = Entry(self.page2,border=1,width=20)
-        self.emial_client_label = Label(self.page2,text="PRENOM",background="#006666",fg="#fff",font=self.p2_font_champ)
-        self.emial_client_entrer = Entry(self.page2,border=1,width=20)
+        self.prenom_client_label = Label(self.page2,text="PRENOM",background="#006666",fg="#fff",font=self.p2_font_champ)
+        self.prenom_client_entrer = Entry(self.page2,border=1,width=20)
         self.tel_client_label = Label(self.page2,text="TELEPHONE",background="#006666",fg="#fff",font=self.p2_font_champ)
-        self.mdp_client_entrer = Entry(self.page2,border=1,width=20)
+        self.tel_client_entrer = Entry(self.page2,border=1,width=20)
         self.adrs_client_label = Label(self.page2,text="ADRESS DE LAIVRAISON",background="#006666",fg="#fff",font=self.p2_font_champ)
         self.adrs_client_entrer = Entry(self.page2,border=1,width=35)
         self.p2_btn_vider = Button(self.page2,text="effacer",padx= 10,pady=1,command=self.clear_All_input,background="#ff073a", fg="#000", font=self.p2_font_button,cursor='hand2')
@@ -56,9 +56,6 @@ class CLientClassMongo:
         self.chercher_nom_client_entrer.place(x=180 ,y=120)
         self.p2_b4_chercher_nom = Button(self.page2,text="chercher par nom",padx= 10,pady=1,command=self.chercher_par_nom, fg="#000", font=self.p2_font_button_chercher,highlightbackground="red",cursor='hand2')
         self.p2_b4_chercher_nom.place(x=180, y=145)
-        self.p2_b5 = Button(self.page2,text="afficher produit",padx= 10,pady=2,command=self.changer_page_to_table1, fg="#000",font=self.p2_font_button_table_1_2,cursor='hand2')
-        self.p2_b5.place(x=900, y=570)
-
         self.table2()
         self.p2_table2.bind('<ButtonRelease>',self.selected_row) #la fonction sans parentese
         self.hover_button()
@@ -69,12 +66,12 @@ class CLientClassMongo:
     def show_input(self):
         self.id_client_label.place(x=550,y=25)
         self.id_client_entrer.place(x=600,y=30)
-        self.emial_client_label.place(x=550,y=60)
-        self.emial_client_entrer.place(x=600,y=65)
+        self.prenom_client_label.place(x=530,y=60)
+        self.prenom_client_entrer.place(x=600,y=65)
         self.nom_client_label.place(x=800,y=25)
         self.nom_client_entrer.place(x=850,y=30)
         self.tel_client_label.place(x=760,y=60)
-        self.mdp_client_entrer.place(x=850,y=65)
+        self.tel_client_entrer.place(x=850,y=65)
         self.adrs_client_label.place(x=490,y=100)
         self.adrs_client_entrer.place(x=670,y=105)
         self.p2_btn_vider.place(x=730, y=150)
@@ -83,8 +80,8 @@ class CLientClassMongo:
         self.show_input()
         id = self.id_client_entrer.get()
         nom = self.nom_client_entrer.get()
-        email = self.emial_client_entrer.get()
-        mdp = self.mdp_client_entrer.get()
+        email = self.prenom_client_entrer.get()
+        mdp = self.tel_client_entrer.get()
         adress = self.adrs_client_entrer.get()
         # if id == '' or nom == '' or email == '' or mdp == '' or adress == '':
         #     tkinter.messagebox.showerror('',"CHAMP VIDE")
@@ -120,24 +117,32 @@ class CLientClassMongo:
             info_client = self.p2_table2.item(client_selectionne)['values']
             self.id_client_entrer.insert(0,info_client[0])
             self.nom_client_entrer.insert(0,info_client[1])
-            self.emial_client_entrer.insert(0,info_client[2])
-            self.mdp_client_entrer.insert(0,info_client[3])
+            self.prenom_client_entrer.insert(0,info_client[2])
+            self.tel_client_entrer.insert(0,info_client[3])
             self.adrs_client_entrer.insert(0,info_client[4])
 
     def modifier(self):
-        client_selectionne = self.p2_table2.focus()
-        # if client_selectionne:
-        #     id = self.id_client_entrer.get()
-        #     nvnom = self.nom_client_entrer.get()
-        #     nv_email = self.emial_client_entrer.get()
-        #     nv_mdp = self.mdp_client_entrer.get()
-        #     nv_adress = self.adrs_client_entrer.get()
-        #     db_client.modifier(nv_nom=nvnom,nv_email=nv_email,nv_mdp=nv_mdp,nv_adress=nv_adress,id=id)
-        #     self.remplir_tableau()
-        #     tkinter.messagebox.showinfo('',"CLIENT MODIFIER AVEC SUCCES")
-        #     self.clear_All_input()
-        # else:
-        #     tkinter.messagebox.showerror('',"SELECTIONNER LE CLIENT D'BBORD")
+        client_selectionne = self.p2_table2.focus()  # Récupérer le client sélectionné dans la table
+        if client_selectionne:  # Vérifier si un client est sélectionné
+            id = self.id_client_entrer.get()  # Récupérer l'id du client
+            nv_nom = self.nom_client_entrer.get()  # Récupérer le nouveau nom
+            nv_prenom = self.prenom_client_entrer.get()  # Récupérer le nouveau prénom
+            nv_telephone = self.tel_client_entrer.get()  # Récupérer le nouveau téléphone
+            nv_adress = self.adrs_client_entrer.get()  # Récupérer la nouvelle adresse
+            
+            # Appeler la fonction modifier pour mettre à jour les données dans la base de données MongoDB
+            db_client_mongodb.modifier(nv_nom=nv_nom, nv_prenom=nv_prenom, nv_telephone=nv_telephone, nv_adress=nv_adress, id=int(id))
+            
+            # Rafraîchir le tableau pour afficher les nouvelles données
+            self.remplir_tableau()
+            
+            # Afficher un message de succès
+            tkinter.messagebox.showinfo('', "CLIENT MODIFIÉ AVEC SUCCÈS")
+            
+            # Effacer les champs de saisie
+            self.clear_All_input()
+        else:
+            tkinter.messagebox.showerror('', "SÉLECTIONNER LE CLIENT D'ABORD")
 
     def suprimmer(self):
         client_selectionne = self.p2_table2.focus()
@@ -171,8 +176,8 @@ class CLientClassMongo:
     def clear_All_input(self):
         self.id_client_entrer.delete(0, END)  # Deletes all characters
         self.nom_client_entrer.delete(0, END)
-        self.emial_client_entrer.delete(0, END)
-        self.mdp_client_entrer.delete(0, END)
+        self.prenom_client_entrer.delete(0, END)
+        self.tel_client_entrer.delete(0, END)
         self.adrs_client_entrer.delete(0, END)
 
     def on_enter1(self,e):
@@ -209,12 +214,6 @@ class CLientClassMongo:
         self.p2_b2.bind("<Leave>", self.on_leave2)
         self.p2_b3.bind("<Enter>", self.on_enter3)
         self.p2_b3.bind("<Leave>", self.on_leave3)
-
-    def changer_page_to_table1(self):
-        return True
-    #     self.page2.destroy()
-    #     p1 = page1()
-    #     p1.afficher_interface()
 
     def table2(self):
         # Création de la table Treeview
